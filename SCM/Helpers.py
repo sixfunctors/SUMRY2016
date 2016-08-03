@@ -68,40 +68,6 @@ def powerset(iterable):
     "powerset([1,2,3]) --> () (1,) (2,) (3,) (1,2) (1,3) (2,3) (1,2,3)"
     s = list(iterable)
     return chain.from_iterable(combinations(s, r) for r in range(len(s)+1))
-    
-# returns a linear combination of the columns of nullmat with no zero elements
-# if none exists, returns zero 1x1 matrix
-def nonDegWeight(n):
-    Z = zeros(1, 1)
-    
-    # returns row index+1 if there is a zero row, 0 otherwise
-    def zerotest(vec):
-        for i in range(vec.rows):
-            if (vec[i] == 0):
-                return i+1
-        return 0
-    
-    # tests whether possible
-    for i in range(n.rows):
-        if (n[i, :] == zeros(1, n.cols)):
-            return Z
-    
-    # Try sum
-    v = zeros(n.rows, 1)
-    for i in range(n.rows):
-        s = sum([n[i, k] for k in range(n.cols)])
-        v[i] = s
-    
-    # loop until one is found
-    row = zerotest(v)
-    while (row):
-        print("Got here with n:", n)
-        j = 0
-        while (n[i, j] == 0):
-            j += 1
-        v = v + n[:, j]
-        row = zerotest(v)
-    return v
 
 # The number of exceptional divisors in Mbar0, n
 def exceptionalCount(n):

@@ -155,18 +155,6 @@ class Complex(setlist):
                 return 1
         return 0
     
-    # Tests if complex is balanceable, returns weighting vector if so, 0 vector if not
-    ## MAY BE OBSOLETE
-    def canBalance(self):
-        Null = self._multMatrix().nullspace()
-        if (Null == []):
-            return zeros(1, 1)
-        n = Null[0] 
-        for e in Null[1:]:
-            n = n.row_join(e)
-        
-        return nonDegWeight(n)
-    
     # Tests if the complex or any subcomplex is balanceable
     def canGenBalance(self):
         m = self._multMatrix()
@@ -269,33 +257,7 @@ class Complex(setlist):
             return Complex(l)
             
     
-    # Converts to polynomial
-    # Returns 0 if not simply balanceable
-    def toPoly(self):
-        # Test simple balanceability
-        #TODO
-        
-        # Generate the variables for the polynomial
-        varstrs = []
-        for i in range(1, self.n()+1):
-            varstrs.append("x_" + str(i))
-        varstrs.sort()
-        vars = []
-        for varstr in varstrs:
-            vars.append(Symbol(varstr))
-        
-        # generate a monomial for each simplex
-        poly = 0
-        for simp in self:
-            m = 1
-            for v in simp:
-                m *= vars[v-1]
-            poly += m
-        print(poly)
-        print(factor(poly))
-        return poly
-    
-    # Returns the f-vector (think like degree list) for the complex
+    # Returns the f-vector (similar to degree list) for the complex
     def fvect(self):
         l = [1]
         for d in range(1, (self.d+1)+1):

@@ -1,8 +1,4 @@
 
-
-
-
-
 ### NO LONGER NEEDED ###
 
 ## Defines a weighting on a complex
@@ -109,9 +105,141 @@ def RemoveDup(rname, wname):
         g.write(str(comp))
         g.write("\n")
     
+## returns linear combination of the columns of nullspace with no zeroes
+# if none exists, returns zero 1x1 matrix
+def nonDegWeight(nullspace):
+    Z = zeros(1, 1)
+    
+    # returns row index+1 if there is a zero row, 0 otherwise
+    def zerotest(vec):
+        for i in range(vec.rows):
+            if (vec[i] == 0):
+                return i+1
+        return 0
+    
+    # tests whether possible
+    for i in range(n.rows):
+        if (n[i, :] == zeros(1, n.cols)):
+            return Z
+    
+    # Try sum
+    v = zeros(n.rows, 1)
+    for i in range(n.rows):
+        s = sum([n[i, k] for k in range(n.cols)])
+        v[i] = s
+    
+    # loop until one is found
+    row = zerotest(v)
+    while (row):
+        print("Got here with n:", n)
+        j = 0
+        while (n[i, j] == 0):
+            j += 1
+        v = v + n[:, j]
+        row = zerotest(v)
+    return v
 
+
+## Performs an obsolete implementation of GenSearch
+"""
+
+
+def loop1(n, HT, bq, fq):
+    while (True):
+        try:
+            cur = bq.get(True, 10)
+            if (len(cur.vertices) == n):
+                fq.put(cur) # Move to the next step of the process
+            else:
+                Step(cur, HT, bq)
+        except Empty:
+            break
+    
+    
+    
+    print("Terminating a process")
+
+## MAIN
+
+    
+# Check dimension of cur (if present)
+try:
+    if (sys.argv[5].d != d):
+        raise IndexError('Wrong degree cur!')
+except IndexError:
+    pass
+except AttributeError:
+    pass
+
+# Generates those non-isomorphic classes of d complexes on exactly n vertices
+# which it encounters _first_, until it gets to n vertices 
+if __name__ == '__main__':
+    t0 = time.clock()
+   
+    workers = Pool()
+    while True:
+        try:
+            bq.get(True, 10)
+            
+    
+    t1 = time.clock()
+    print("Starts generated in", round(t1-t0, 3), "seconds")
+    exit(0)
+    while True:
+        try:
+            out.write(fq.get(False).toStr())
+        except Empty:
+            exit(0)
+    
+# Checkpoint everything
+debug.write(str(HT) + "\n")
+for i in fq:
+    debug.write(i.toStr())
+debug.write("\n")
+
+# Second step: add vertices by a secondary step process 
+# until a simply balanceable complex is reached
+# add these to a final list
+final = []
+
+def eval2(value):
+    if (not value):
+        job_server.submit(Step, (cur, HT, fq))
+
+def eval1(value):
+    if (value):
+        final.append(cur)
+        cur.output(out)
+    else:
+        job_server.submit(cur.canGenBalance, (), callback=eval2)
+
+def can_empty(fq):
+    if (len(fq) == 0):
+        return False
+        
+    while (len(fq) > 0):
+        # Checkpoint the data every 1000
+        if (count%1000 == 0):
+            debug.write(str(HT) + "\n")
+            for i in fq:
+                debug.write(i.toStr())
+            debug.write("\n")
         
         
+        cur = fq.popleft()
+        job_server.submit(cur.canSimBalance, (), callback=eval1)
+    return True
+
+while(can_empty(fq)):
+    print("This happened.")
+    job_server.wait()
+    
+print(HT.buckLen())
+t2 = time.clock()
+
+print(round(t1 - t0, 3))
+print(round(t2 - t1, 3))
+"""
         
         
         
