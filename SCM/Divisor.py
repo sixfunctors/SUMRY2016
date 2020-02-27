@@ -207,6 +207,20 @@ class Divisor(dict):
     # Returns true if the divisor is effective
     def isEffective(self):
         return (self.toComp().Balance() != [])
+
+    # Returns true if the divisor is strictly effective
+    def isStrictEff(self):
+        if not self.isEffective():
+            return False
+        else:
+            for key in self.indexSort():
+                self[key] -= 1
+                if self.isEffective():
+                    self[key] += 1
+                    return False
+                self[key] += 1
+            return True
+
     
     # Permutes the vertices of a divisor in place
     # FROM and TO should be an unzipped dictionary for the permutation

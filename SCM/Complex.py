@@ -6,7 +6,6 @@
 from SCM.Helpers import (
     prod,
     nCr,
-    nonDegWeight,
     is_zero
 )
 
