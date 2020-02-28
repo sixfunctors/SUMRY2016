@@ -214,6 +214,9 @@ class Divisor(dict):
             return False
         else:
             for key in self.indexSort():
+                if key == (): # Do not decrement degree
+                    continue
+
                 self[key] -= 1
                 if self.isEffective():
                     self[key] += 1
@@ -221,6 +224,20 @@ class Divisor(dict):
                 self[key] += 1
             return True
 
+    # This method replaces D with D - E_I if some D - E_I is effective
+    def decEffective(self):
+        if not self.isEffective():
+            raise(IndexError('Divisor must be effective for decEffective!'))
+        else:
+            for key in self.indexSort():
+                if key == (): # Do not decrement degree
+                    continue
+
+                self[key] -= 1
+                if self.isEffective():
+                    return True
+                self[key] += 1
+            return False
     
     # Permutes the vertices of a divisor in place
     # FROM and TO should be an unzipped dictionary for the permutation
